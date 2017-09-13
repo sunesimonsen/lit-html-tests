@@ -16,7 +16,7 @@ describe("repeat", () => {
   });
 
   it("is stable while swapping items", () => {
-    const initialItems = [0, 1, 2, 3, 4];
+    const initialItems = [1, 2, 3, 4, 5];
 
     const swapSequence = sequence(() => ({
       from: natural({ max: initialItems.length - 1 }),
@@ -29,6 +29,8 @@ describe("repeat", () => {
           html`<ul>${repeat(items, i => i, i => html`<li>${i}</li>`)}</ul>`;
 
         const items = initialItems.slice();
+
+        render(t(items), container);
 
         for (let swap of swaps) {
           const temp = items[swap.to];
