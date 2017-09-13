@@ -9,12 +9,6 @@ const { array, natural, sequence, shape } = new Generators(42);
 expect.use(unexpectedCheck);
 
 describe("repeat", () => {
-  let container;
-
-  beforeEach(() => {
-    container = document.createElement("div");
-  });
-
   it("is stable while swapping items", () => {
     const initialItems = [1, 2, 3, 4, 5];
 
@@ -25,6 +19,8 @@ describe("repeat", () => {
 
     expect(
       swaps => {
+        const container = document.createElement("div");
+
         const t = items =>
           html`<ul>${repeat(items, i => i, i => html`<li>${i}</li>`)}</ul>`;
 
