@@ -11,6 +11,7 @@
   "dependencies": {
     "babel-jest": "^21.0.2",
     "chance-generators": "^2.1.1",
+    "git": "github.com:PolymerLabs/lit-html.git#fix-repeat-92",
     "lit-html": "^0.6.0",
     "unexpected": "^10.35.0",
     "unexpected-check": "^1.12.0"
@@ -28,8 +29,12 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     },
-    "moduleFileExtensions": ["js"],
-    "transformIgnorePatterns": ["/node_modules/(?!(lit-html.*?\\.js$))"],
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(lit-html.*?\\.js$))"
+    ],
     "testRegex": "\\.*(spec\\.js)$"
   }
 }
