@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "lit-html-tests",
+  "version": "1.0.0",
+  "description": "Randomized testing of lit-html",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Sune Simonsen <sune@we-knowhow.dk>",
+  "license": "MIT",
+  "dependencies": {
+    "chance-generators": "^2.1.1",
+    "lit-html": "^0.6.0",
+    "mocha": "^3.5.3",
+    "unexpected": "^10.35.0",
+    "unexpected-check": "^1.12.0"
+  }
+}
