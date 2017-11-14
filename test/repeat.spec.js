@@ -4,31 +4,65 @@ import expect from "unexpected/unexpected";
 import unexpectedCheck from "unexpected-check";
 import Generators from "chance-generators";
 
-const { array, natural, sequence, shape } = new Generators(42);
+const { integer, n, natural, sequence, shape } = new Generators(42);
 
 expect.use(unexpectedCheck);
 
-describe("repeat", () => {
-  it("is stable while swapping items", () => {
-    const initialItems = [1, 2, 3, 4, 5];
+const t = items =>
+  html`<ul>${repeat(items, i => i, i => html`<li>${i}</li>`)}</ul>`;
 
-    const swapSequence = sequence(() => ({
-      from: natural({ max: initialItems.length - 1 }),
-      to: natural({ max: initialItems.length - 1 })
-    }));
+describe("repeat", () => {
+  it("fails", () => {
+    const container = document.createElement("div");
+
+    const t = items =>
+      html`<ul>${repeat(items, i => i, i => html`<li>${i}</li>`)}</ul>`;
+
+    const items = [666, 666];
+    render(t(items), container);
+  });
+
+  it("fails", () => {
+    const container = document.createElement("div");
+
+    const t = items =>
+      html`<ul>${repeat(items, i => i, i => html`<li>${i}</li>`)}</ul>`;
+
+    const items = [666, 666];
+    render(t(items), container);
+    expect(container.textContent, "to be", items.join(""));
+    render(t(items), container);
+    expect(container.textContent, "to be", items.join(""));
+  });
+
+  it("is stable while swapping items", () => {
+    const plans = shape({
+      items: n(natural({ max: 20 }), natural({ min: 1, max: 50 })),
+      numberOfSwaps: natural({ max: 50 })
+    }).map(({ items, numberOfSwaps }) => {
+      const swaps = sequence(
+        () => ({
+          from: natural({ max: items.length - 1 }),
+          to: natural({ max: items.length - 1 })
+        }),
+        numberOfSwaps
+      );
+
+      return {
+        items,
+        swaps
+      };
+    });
 
     expect(
-      swaps => {
+      plan => {
         const container = document.createElement("div");
 
-        const t = items =>
-          html`<ul>${repeat(items, i => i, i => html`<li>${i}</li>`)}</ul>`;
-
-        const items = initialItems.slice();
+        const items = plan.items;
 
         render(t(items), container);
 
-        for (let swap of swaps) {
+        for (let swap of plan.swaps) {
           const temp = items[swap.to];
           items[swap.to] = items[swap.from];
           items[swap.from] = temp;
@@ -38,7 +72,10 @@ describe("repeat", () => {
         }
       },
       "to be valid for all",
-      swapSequence
+      {
+        generators: [plans],
+        maxIterations: 1000
+      }
     );
   });
 });
